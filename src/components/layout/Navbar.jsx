@@ -1,19 +1,63 @@
-import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTheme } from '../../contexts/ThemeContext';
 
 const Navbar = () => {
   const { darkMode, toggleDarkMode } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
 
   const navItems = [
-    { path: '/', label: 'Home' },
-    { path: '/about', label: 'About' },
-    { path: '/skills', label: 'Skills' },
-    { path: '/projects', label: 'Projects' },
-    { path: '/contact', label: 'Contact' },
+    { path: '/', label: 'Home', sectionId: 'home' },
+    { path: '/about', label: 'About', sectionId: 'about' },
+    { path: '/skills', label: 'Skills', sectionId: 'skills' },
+    { path: '/projects', label: 'Projects', sectionId: 'projects' },
+    { path: '/contact', label: 'Contact', sectionId: 'contact' },
   ];
+
+  // Smooth scroll to section on home page
+  const handleSmoothScroll = (e, sectionId) => {
+    e.preventDefault();
+    
+    // If we're on home page, scroll to section
+    if (location.pathname === '/') {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        const offset = 80; // Navbar height offset
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - offset;
+        
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+      setIsOpen(false);
+    } else {
+      // If on other pages, navigate to home page with hash
+      window.location.href = `/#${sectionId}`;
+    }
+  };
+
+  // Handle hash navigation on page load
+  useEffect(() => {
+    if (location.pathname === '/' && location.hash) {
+      const sectionId = location.hash.slice(1);
+      setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          const offset = 80;
+          const elementPosition = element.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - offset;
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        }
+      }, 100);
+    }
+  }, [location]);
 
   return (
     <nav className="glass-card sticky top-0 z-50">
@@ -22,7 +66,8 @@ const Navbar = () => {
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+            className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent cursor-pointer"
+            onClick={() => window.location.href = '/'}
           >
             Portfolio
           </motion.div>
@@ -30,19 +75,18 @@ const Navbar = () => {
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
-              <NavLink
+              <a
                 key={item.path}
-                to={item.path}
-                className={({ isActive }) =>
-                  `transition-colors duration-300 ${
-                    isActive
-                      ? 'text-blue-600 dark:text-blue-400'
-                      : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
-                  }`
-                }
+                href={item.path === '/' ? '/' : `/#${item.sectionId}`}
+                onClick={(e) => handleSmoothScroll(e, item.sectionId)}
+                className={`transition-colors duration-300 ${
+                  location.pathname === item.path || (location.pathname === '/' && location.hash === `#${item.sectionId}`)
+                    ? 'text-blue-600 dark:text-blue-400'
+                    : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
+                }`}
               >
                 {item.label}
-              </NavLink>
+              </a>
             ))}
             <button
               onClick={toggleDarkMode}
@@ -79,20 +123,21 @@ const Navbar = () => {
             className="md:hidden py-4"
           >
             {navItems.map((item) => (
-              <NavLink
+              <a
                 key={item.path}
-                to={item.path}
-                onClick={() => setIsOpen(false)}
-                className={({ isActive }) =>
-                  `block py-2 transition-colors duration-300 ${
-                    isActive
-                      ? 'text-blue-600 dark:text-blue-400'
-                      : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
-                  }`
-                }
+                href={item.path === '/' ? '/' : `/#${item.sectionId}`}
+                onClick={(e) => {
+                  handleSmoothScroll(e, item.sectionId);
+                  setIsOpen(false);
+                }}
+                className={`block py-2 transition-colors duration-300 ${
+                  location.pathname === item.path || (location.pathname === '/' && location.hash === `#${item.sectionId}`)
+                    ? 'text-blue-600 dark:text-blue-400'
+                    : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
+                }`}
               >
                 {item.label}
-              </NavLink>
+              </a>
             ))}
           </motion.div>
         )}

@@ -1,12 +1,12 @@
-import { ThemeProvider } from './contexts/ThemeContext'
-import AppRoutes from './routes/AppRoutes'
+import { ThemeProvider } from './contexts/ThemeContext';
+import Home from './pages/Home';
 
 function App() {
   return (
     <ThemeProvider>
-      <AppRoutes />
+      <Home />
     </ThemeProvider>
-  )
+  );
 }
 
-export default App
+export default App;
