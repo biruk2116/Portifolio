@@ -26,11 +26,10 @@ export default {
           pink: '#ec489a',
         },
         dark: {
-          100: '#1e1e2e',
-          200: '#2d2d3a',
-          300: '#3c3c4a',
-          400: '#4b4b5a',
-          500: '#5a5a6a',
+          100: '#0f0f1a',
+          200: '#1a1a2e',
+          300: '#16213e',
+          400: '#0f3460',
         }
       },
       fontFamily: {
@@ -42,6 +41,7 @@ export default {
         'glow': 'glow 2s ease-in-out infinite',
         'slide-up': 'slideUp 0.5s ease-out',
         'slide-down': 'slideDown 0.5s ease-out',
+        'pulse-slow': 'pulse 3s ease-in-out infinite',
       },
       keyframes: {
         float: {
