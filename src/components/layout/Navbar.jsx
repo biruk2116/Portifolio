@@ -1,145 +1,112 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { Menu, X, Moon, Sun } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
 
 const Navbar = () => {
   const { darkMode, toggleDarkMode } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
-  const location = useLocation();
+  const [active, setActive] = useState('home');
+  const [scrolled, setScrolled] = useState(false);
 
-  const navItems = [
-    { path: '/', label: 'Home', sectionId: 'home' },
-    { path: '/about', label: 'About', sectionId: 'about' },
-    { path: '/skills', label: 'Skills', sectionId: 'skills' },
-    { path: '/projects', label: 'Projects', sectionId: 'projects' },
-    { path: '/contact', label: 'Contact', sectionId: 'contact' },
-  ];
+  const items = ['home', 'about', 'skills', 'projects', 'contact'];
 
-  // Smooth scroll to section on home page
-  const handleSmoothScroll = (e, sectionId) => {
-    e.preventDefault();
-    
-    // If we're on home page, scroll to section
-    if (location.pathname === '/') {
-      const element = document.getElementById(sectionId);
-      if (element) {
-        const offset = 80; // Navbar height offset
-        const elementPosition = element.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - offset;
-        
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+      const pos = window.scrollY + 100;
+      for (const item of items) {
+        const el = document.getElementById(item);
+        if (el) {
+          const top = el.offsetTop;
+          const bottom = top + el.offsetHeight;
+          if (pos >= top && pos < bottom) {
+            setActive(item);
+            break;
+          }
+        }
       }
+    };
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollTo = (id) => {
+    const el = document.getElementById(id);
+    if (el) {
+      const offset = 80;
+      const pos = el.getBoundingClientRect().top + window.pageYOffset - offset;
+      window.scrollTo({ top: pos, behavior: 'smooth' });
       setIsOpen(false);
-    } else {
-      // If on other pages, navigate to home page with hash
-      window.location.href = `/#${sectionId}`;
     }
   };
 
-  // Handle hash navigation on page load
-  useEffect(() => {
-    if (location.pathname === '/' && location.hash) {
-      const sectionId = location.hash.slice(1);
-      setTimeout(() => {
-        const element = document.getElementById(sectionId);
-        if (element) {
-          const offset = 80;
-          const elementPosition = element.getBoundingClientRect().top;
-          const offsetPosition = elementPosition + window.pageYOffset - offset;
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth'
-          });
-        }
-      }, 100);
-    }
-  }, [location]);
-
   return (
-    <nav className="glass-card sticky top-0 z-50">
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all ${
+      scrolled 
+        ? darkMode ? 'bg-gray-900/95 backdrop-blur-xl shadow-2xl' : 'bg-white/95 backdrop-blur-xl shadow-2xl'
+        : darkMode ? 'bg-gray-900/80 backdrop-blur-md' : 'bg-white/80 backdrop-blur-md'
+    } border-b border-gray-200 dark:border-gray-800`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent cursor-pointer"
-            onClick={() => window.location.href = '/'}
-          >
+        <div className="flex justify-between items-center h-16 md:h-20">
+          <button onClick={() => scrollTo('home')} className="text-xl md:text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
             Portfolio
-          </motion.div>
+          </button>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <a
-                key={item.path}
-                href={item.path === '/' ? '/' : `/#${item.sectionId}`}
-                onClick={(e) => handleSmoothScroll(e, item.sectionId)}
-                className={`transition-colors duration-300 ${
-                  location.pathname === item.path || (location.pathname === '/' && location.hash === `#${item.sectionId}`)
+          <div className="hidden md:flex items-center gap-2">
+            {items.map(item => (
+              <button
+                key={item}
+                onClick={() => scrollTo(item)}
+                className={`px-4 py-2 rounded-lg font-medium capitalize transition ${
+                  active === item
                     ? 'text-blue-600 dark:text-blue-400'
-                    : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
+                    : darkMode ? 'text-gray-300 hover:text-white' : 'text-gray-700 hover:text-gray-900'
                 }`}
               >
-                {item.label}
-              </a>
+                {item}
+              </button>
             ))}
-            <button
-              onClick={toggleDarkMode}
-              className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:scale-105 transition-transform"
-            >
-              {darkMode ? '☀️' : '🌙'}
+            <button onClick={toggleDarkMode} className="ml-4 p-2 rounded-lg bg-gray-200 dark:bg-gray-800">
+              {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
+            <button onClick={() => scrollTo('contact')} className="ml-2 px-5 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium">
+              Hire Me
             </button>
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center gap-4">
-            <button
-              onClick={toggleDarkMode}
-              className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700"
-            >
-              {darkMode ? '☀️' : '🌙'}
+          {/* Mobile Button */}
+          <div className="md:hidden flex items-center gap-3">
+            <button onClick={toggleDarkMode} className="p-2 rounded-lg bg-gray-200 dark:bg-gray-800">
+              {darkMode ? <Sun size={20} /> : <Moon size={20} />}
             </button>
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
-              </svg>
+            <button onClick={() => setIsOpen(!isOpen)} className="p-2 rounded-lg bg-gray-200 dark:bg-gray-800">
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
 
         {/* Mobile Menu */}
         {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="md:hidden py-4"
-          >
-            {navItems.map((item) => (
-              <a
-                key={item.path}
-                href={item.path === '/' ? '/' : `/#${item.sectionId}`}
-                onClick={(e) => {
-                  handleSmoothScroll(e, item.sectionId);
-                  setIsOpen(false);
-                }}
-                className={`block py-2 transition-colors duration-300 ${
-                  location.pathname === item.path || (location.pathname === '/' && location.hash === `#${item.sectionId}`)
-                    ? 'text-blue-600 dark:text-blue-400'
-                    : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
+          <div className="md:hidden py-4 space-y-2">
+            {items.map(item => (
+              <button
+                key={item}
+                onClick={() => scrollTo(item)}
+                className={`w-full text-left py-3 px-4 rounded-lg capitalize ${
+                  active === item
+                    ? 'bg-blue-500/10 text-blue-600 dark:text-blue-400'
+                    : darkMode ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
                 }`}
               >
-                {item.label}
-              </a>
+                {item}
+              </button>
             ))}
-          </motion.div>
+            <button onClick={() => scrollTo('contact')} className="w-full mt-4 px-5 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium">
+              Hire Me
+            </button>
+          </div>
         )}
       </div>
     </nav>
