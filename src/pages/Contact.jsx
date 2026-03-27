@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
-import { Send, Github, Linkedin, Mail } from 'lucide-react';
-import SectionTitle from '../components/ui/SectionTitle';
-import Button from '../components/ui/Button';
+import { useState } from 'react';
 import FadeIn from '../components/animations/FadeIn';
+import { Mail, Phone, MapPin, Send } from 'lucide-react';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -10,12 +8,17 @@ const Contact = () => {
     email: '',
     message: '',
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    alert('Message sent! (Demo)');
-    setFormData({ name: '', email: '', message: '' });
+    setIsSubmitting(true);
+    // Simulate form submission
+    setTimeout(() => {
+      alert('Message sent successfully!');
+      setFormData({ name: '', email: '', message: '' });
+      setIsSubmitting(false);
+    }, 1000);
   };
 
   const handleChange = (e) => {
@@ -28,57 +31,51 @@ const Contact = () => {
   return (
     <section id="contact" className="py-20 px-4">
       <div className="max-w-7xl mx-auto">
-        <SectionTitle
-          title="Get In Touch"
-          subtitle="Let's work together"
-        />
+        <FadeIn>
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            Get In Touch
+          </h2>
+        </FadeIn>
 
         <div className="grid lg:grid-cols-2 gap-12">
-          <FadeIn direction="left">
-            <div className="glass-card rounded-xl p-8">
-              <h3 className="text-2xl font-bold mb-6">Contact Information</h3>
-              <div className="space-y-4 mb-8">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-                    <Mail className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+          <FadeIn direction="right">
+            <div className="space-y-8">
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                    <Mail className="text-blue-600 dark:text-blue-400" size={24} />
                   </div>
-                  <div>
-                    <p className="font-semibold">Email</p>
-                    <a href="mailto:hello@example.com" className="text-gray-600 dark:text-gray-400 hover:text-blue-600">
-                      hello@example.com
-                    </a>
-                  </div>
+                  <h3 className="text-xl font-semibold text-gray-800 dark:text-white">Email</h3>
                 </div>
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
-                    <Github className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                <p className="text-gray-600 dark:text-gray-400">john.doe@example.com</p>
+              </div>
+
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                    <Phone className="text-blue-600 dark:text-blue-400" size={24} />
                   </div>
-                  <div>
-                    <p className="font-semibold">GitHub</p>
-                    <a href="https://github.com" className="text-gray-600 dark:text-gray-400 hover:text-purple-600">
-                      github.com/johndoe
-                    </a>
-                  </div>
+                  <h3 className="text-xl font-semibold text-gray-800 dark:text-white">Phone</h3>
                 </div>
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center">
-                    <Linkedin className="w-6 h-6 text-pink-600 dark:text-pink-400" />
+                <p className="text-gray-600 dark:text-gray-400">+1 (555) 123-4567</p>
+              </div>
+
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                    <MapPin className="text-blue-600 dark:text-blue-400" size={24} />
                   </div>
-                  <div>
-                    <p className="font-semibold">LinkedIn</p>
-                    <a href="https://linkedin.com" className="text-gray-600 dark:text-gray-400 hover:text-pink-600">
-                      linkedin.com/in/johndoe
-                    </a>
-                  </div>
+                  <h3 className="text-xl font-semibold text-gray-800 dark:text-white">Location</h3>
                 </div>
+                <p className="text-gray-600 dark:text-gray-400">San Francisco, CA</p>
               </div>
             </div>
           </FadeIn>
 
-          <FadeIn direction="right" delay={0.2}>
-            <form onSubmit={handleSubmit} className="glass-card rounded-xl p-8 space-y-6">
+          <FadeIn direction="left">
+            <form onSubmit={handleSubmit} className="space-y-6 bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium mb-2">
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Name
                 </label>
                 <input
@@ -88,12 +85,12 @@ const Contact = () => {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm font-medium mb-2">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Email
                 </label>
                 <input
@@ -103,12 +100,12 @@ const Contact = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-sm font-medium mb-2">
+                <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Message
                 </label>
                 <textarea
@@ -118,14 +115,18 @@ const Contact = () => {
                   onChange={handleChange}
                   required
                   rows="5"
-                  className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
               </div>
 
-              <Button type="submit" className="w-full">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isSubmitting ? 'Sending...' : 'Send Message'}
                 <Send size={18} />
-                Send Message
-              </Button>
+              </button>
             </form>
           </FadeIn>
         </div>
