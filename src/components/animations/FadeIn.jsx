@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react';
 import { motion, useInView, useAnimation } from 'framer-motion';
 
-const FadeIn = ({ children, delay = 0, direction = 'up' }) => {
+const FadeIn = ({ children, delay = 0, direction = 'up', className = '' }) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
   const controls = useAnimation();
 
   const directions = {
@@ -15,7 +15,7 @@ const FadeIn = ({ children, delay = 0, direction = 'up' }) => {
 
   useEffect(() => {
     if (isInView) {
-      controls.start('visible');
+      controls.start("visible");
     }
   }, [isInView, controls]);
 
@@ -28,6 +28,7 @@ const FadeIn = ({ children, delay = 0, direction = 'up' }) => {
         hidden: { opacity: 0, ...directions[direction] },
         visible: { opacity: 1, y: 0, x: 0, transition: { duration: 0.6, delay } },
       }}
+      className={className}
     >
       {children}
     </motion.div>

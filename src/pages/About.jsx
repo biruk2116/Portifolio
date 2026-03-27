@@ -1,5 +1,5 @@
 import FadeIn from '../components/animations/FadeIn';
-import { Award, Coffee, Heart, Zap } from 'lucide-react';
+import { Award, Zap, Coffee, Heart } from 'lucide-react';
 
 const About = () => {
   const stats = [
@@ -44,8 +44,6 @@ const About = () => {
               <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
                 My journey in tech started with a curiosity about how things work,
                 and that curiosity has driven me to continuously learn and grow.
-                I believe in writing clean, maintainable code and delivering
-                exceptional user experiences.
               </p>
               
               <div className="grid grid-cols-2 gap-4 pt-4">

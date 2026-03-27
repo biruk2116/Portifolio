@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Menu, X, Code2 } from 'lucide-react';
-import { useTheme } from '../../contexts/ThemeContext';
 
-const Navbar = ({ activeSection }) => {
+const Navbar = ({ activeSection, toggleTheme, isDark }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { isDark, toggleTheme } = useTheme();
 
   const navItems = [
     { id: 'home', label: 'Home' },
@@ -40,7 +38,7 @@ const Navbar = ({ activeSection }) => {
     <nav
       className={`fixed top-0 w-full z-50 transition-all duration-500 ${
         scrolled
-          ? 'glass-effect shadow-lg border-b border-gray-200/20 dark:border-gray-700/20'
+          ? 'bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-lg border-b border-gray-200/20 dark:border-gray-700/20'
           : 'bg-transparent'
       }`}
     >
@@ -112,7 +110,7 @@ const Navbar = ({ activeSection }) => {
             isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
           }`}
         >
-          <div className="py-4 space-y-2 glass-effect rounded-lg mt-2 mb-4">
+          <div className="py-4 space-y-2 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md rounded-lg mt-2 mb-4">
             {navItems.map((item) => (
               <button
                 key={item.id}
