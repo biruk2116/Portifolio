@@ -1,65 +1,48 @@
-import React from 'react';
-import SectionTitle from '../components/ui/SectionTitle';
 import FadeIn from '../components/animations/FadeIn';
 
 const About = () => {
   return (
-    <section id="about" className="py-20 px-4">
+    <section id="about" className="py-20 px-4 bg-gray-50 dark:bg-gray-800/50">
       <div className="max-w-7xl mx-auto">
-        <SectionTitle
-          title="About Me"
-          subtitle="Get to know me better"
-        />
+        <FadeIn>
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            About Me
+          </h2>
+        </FadeIn>
 
         <div className="grid md:grid-cols-2 gap-12 items-center">
-          <FadeIn direction="left">
-            <div className="space-y-6">
-              <p className="text-lg text-gray-700 dark:text-gray-300">
-                I'm a passionate Full Stack Developer with over 5 years of experience in building
-                web applications. I specialize in React and modern JavaScript frameworks,
-                creating responsive and performant user interfaces.
-              </p>
-              <p className="text-lg text-gray-700 dark:text-gray-300">
-                My journey in tech started with a curiosity for how things work, which evolved
-                into a career focused on solving real-world problems through code. I believe in
-                writing clean, maintainable code and continuously learning new technologies.
-              </p>
-              <div className="pt-4">
-                <h3 className="text-xl font-semibold mb-3 text-gray-900 dark:text-white">Education</h3>
-                <div className="space-y-2">
-                  <p className="text-gray-700 dark:text-gray-300">
-                    <span className="font-semibold">B.Sc. in Computer Science</span>
-                    <br />
-                    University of Technology, 2015-2019
-                  </p>
-                </div>
-              </div>
+          <FadeIn direction="right">
+            <div className="relative group">
+              <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+              <img
+                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop"
+                alt="Profile"
+                className="relative rounded-2xl shadow-2xl w-full max-w-md mx-auto"
+              />
             </div>
           </FadeIn>
 
-          <FadeIn direction="right" delay={0.2}>
-            <div className="glass-card rounded-xl p-8">
-              <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Experience</h3>
-              <div className="space-y-6">
-                <div>
-                  <h4 className="font-semibold text-blue-600 dark:text-blue-400">
-                    Senior Frontend Developer
-                  </h4>
-                  <p className="text-gray-600 dark:text-gray-400 mb-2">Tech Corp • 2022 - Present</p>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    Leading frontend development for enterprise applications, mentoring junior developers,
-                    and implementing modern React patterns.
-                  </p>
+          <FadeIn direction="left">
+            <div className="space-y-6">
+              <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
+                I'm a passionate Full Stack Developer with 5+ years of experience building
+                web applications that solve real-world problems. I love creating elegant,
+                efficient, and user-friendly solutions.
+              </p>
+              <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
+                My journey in tech started with a curiosity about how things work,
+                and that curiosity has driven me to continuously learn and grow.
+                I believe in writing clean, maintainable code and delivering
+                exceptional user experiences.
+              </p>
+              <div className="grid grid-cols-2 gap-4 pt-4">
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                  <h3 className="text-2xl font-bold text-blue-600">5+</h3>
+                  <p className="text-gray-600 dark:text-gray-400">Years Experience</p>
                 </div>
-                <div>
-                  <h4 className="font-semibold text-blue-600 dark:text-blue-400">
-                    Full Stack Developer
-                  </h4>
-                  <p className="text-gray-600 dark:text-gray-400 mb-2">StartUp Inc • 2019 - 2022</p>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    Developed and maintained full-stack applications using MERN stack, collaborated
-                    with design team to implement responsive UIs.
-                  </p>
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                  <h3 className="text-2xl font-bold text-blue-600">50+</h3>
+                  <p className="text-gray-600 dark:text-gray-400">Projects Completed</p>
                 </div>
               </div>
             </div>
