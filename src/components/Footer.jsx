@@ -10,10 +10,10 @@ export default function Footer() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center space-y-6">
           <div className="flex space-x-6">
-            <SocialIcon href="https://github.com" icon={Github} />
-            <SocialIcon href="https://linkedin.com" icon={Linkedin} />
+            <SocialIcon href="https://github.com/biruk2116" icon={Github} />
+            <SocialIcon href="https://linkedin.com/in/biruk-belay" icon={Linkedin} />
             <SocialIcon href="https://twitter.com" icon={Twitter} />
-            <SocialIcon href="mailto:john@example.com" icon={Mail} />
+            <SocialIcon href="mailto:birukbelay528@gmail.com" icon={Mail} />
           </div>
           
           <div className="text-center">

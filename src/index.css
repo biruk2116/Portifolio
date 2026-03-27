@@ -7,15 +7,31 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
   }
 
   body {
     @apply bg-white dark:bg-dark-100 text-gray-900 dark:text-white transition-colors duration-300;
     font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* Better touch targets for mobile */
+  button, 
+  a,
+  [role="button"] {
+    @apply cursor-pointer;
+    touch-action: manipulation;
+  }
+
+  /* Improve scrolling on mobile */
+  * {
+    -webkit-overflow-scrolling: touch;
   }
 
   ::-webkit-scrollbar {
     width: 8px;
+    height: 8px;
   }
 
   ::-webkit-scrollbar-track {
@@ -24,6 +40,13 @@
 
   ::-webkit-scrollbar-thumb {
     @apply bg-gradient-to-b from-neon-purple to-neon-cyan rounded-full;
+  }
+
+  /* Mobile optimizations */
+  @media (max-width: 768px) {
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
   }
 }
 
@@ -36,23 +59,6 @@
     @apply bg-white/5 dark:bg-dark-200/20 backdrop-blur-md border border-white/10 dark:border-white/5 rounded-2xl;
   }
 
-  .neon-border {
-    @apply relative overflow-hidden rounded-xl;
-  }
-  
-  .neon-border::before {
-    content: '';
-    @apply absolute inset-0 rounded-xl p-[1px] bg-gradient-to-r from-neon-purple via-neon-cyan to-neon-pink opacity-0 transition-opacity duration-300;
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-  }
-
-  .neon-border:hover::before {
-    @apply opacity-100;
-  }
-
   .text-gradient {
     @apply bg-gradient-to-r from-neon-purple via-neon-cyan to-neon-pink bg-clip-text text-transparent;
   }
@@ -61,17 +67,13 @@
     @apply transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl;
   }
 
-  .animate-gradient {
-    background-size: 200% 200%;
-    animation: gradient 3s ease infinite;
+  /* Mobile-first responsive containers */
+  .container-mobile {
+    @apply px-4 mx-auto max-w-7xl;
   }
 
-  @keyframes gradient {
-    0%, 100% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
+  /* Better touch feedback for mobile */
+  .touch-feedback {
+    @apply active:scale-95 transition-transform duration-150;
   }
 }

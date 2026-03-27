@@ -58,7 +58,7 @@ export default function Hero() {
               />
               <img
                 src="https://ui-avatars.com/api/?background=8b5cf6&color=fff&bold=true&size=150&name=John+Doe"
-                alt="John Doe"
+                alt="Biruk Belay"
                 className="relative w-32 h-32 rounded-full border-4 border-neon-purple object-cover"
               />
             </div>
@@ -71,7 +71,7 @@ export default function Hero() {
             className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4"
           >
             Hi, I'm{' '}
-            <span className="text-gradient animate-gradient">John Doe</span>
+            <span className="text-gradient animate-gradient">Biruk Belay</span>
           </motion.h1>
 
           <motion.div
@@ -122,7 +122,7 @@ export default function Hero() {
             </motion.button>
             
             <motion.a
-              href="/resume.pdf"
+              href="/Biruk BELAY Offer Letter.pdf"
               download
               className="px-8 py-3 rounded-lg font-semibold border-2 border-neon-purple text-neon-purple hover:bg-neon-purple hover:text-white transition-all duration-300"
               whileHover={{ scale: 1.05 }}
@@ -141,9 +141,9 @@ export default function Hero() {
             transition={{ delay: 0.8 }}
             className="flex justify-center space-x-6"
           >
-            <SocialIcon href="https://github.com" icon={Github} label="GitHub" />
-            <SocialIcon href="https://linkedin.com" icon={Linkedin} label="LinkedIn" />
-            <SocialIcon href="mailto:john@example.com" icon={Mail} label="Email" />
+            <SocialIcon href="https://github.com/biruk2116" icon={Github} label="GitHub" />
+            <SocialIcon href="https://linkedin.com/in/biruk-belay" icon={Linkedin} label="LinkedIn" />
+            <SocialIcon href="mailto:birukbelay528@gmail.com" icon={Mail} label="Email" />
           </motion.div>
         </motion.div>
       </div>
