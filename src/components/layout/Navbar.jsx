@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Code2 } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
 
 const Navbar = ({ activeSection }) => {
@@ -38,23 +38,24 @@ const Navbar = ({ activeSection }) => {
 
   return (
     <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+      className={`fixed top-0 w-full z-50 transition-all duration-500 ${
         scrolled
-          ? 'bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-lg'
+          ? 'glass-effect shadow-lg border-b border-gray-200/20 dark:border-gray-700/20'
           : 'bg-transparent'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex-shrink-0">
-            <button
-              onClick={() => scrollToSection('home')}
-              className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent hover:scale-105 transition-transform"
-            >
+          <button
+            onClick={() => scrollToSection('home')}
+            className="flex items-center gap-2 group"
+          >
+            <Code2 className="w-8 h-8 text-blue-600 dark:text-blue-400 group-hover:rotate-12 transition-transform" />
+            <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               Portfolio
-            </button>
-          </div>
+            </span>
+          </button>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-1">
@@ -82,7 +83,7 @@ const Navbar = ({ activeSection }) => {
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className="ml-4 p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:scale-110 transition-transform"
+              className="ml-4 p-2 rounded-lg bg-gray-200/50 dark:bg-gray-700/50 backdrop-blur-sm hover:scale-110 transition-all duration-300"
             >
               {isDark ? '☀️' : '🌙'}
             </button>
@@ -92,13 +93,13 @@ const Navbar = ({ activeSection }) => {
           <div className="md:hidden flex items-center gap-2">
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700"
+              className="p-2 rounded-lg bg-gray-200/50 dark:bg-gray-700/50 backdrop-blur-sm"
             >
               {isDark ? '☀️' : '🌙'}
             </button>
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              className="p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-200/50 dark:hover:bg-gray-700/50 transition-all duration-300"
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -107,11 +108,11 @@ const Navbar = ({ activeSection }) => {
 
         {/* Mobile Menu */}
         <div
-          className={`md:hidden transition-all duration-300 ease-in-out ${
-            isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
+          className={`md:hidden transition-all duration-500 ease-in-out overflow-hidden ${
+            isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
           }`}
         >
-          <div className="py-4 space-y-2 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md rounded-lg mt-2">
+          <div className="py-4 space-y-2 glass-effect rounded-lg mt-2 mb-4">
             {navItems.map((item) => (
               <button
                 key={item.id}

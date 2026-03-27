@@ -8,7 +8,14 @@
   }
   
   body {
-    @apply antialiased;
+    @apply antialiased bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+  
+  * {
+    @apply scroll-smooth;
   }
 }
 
@@ -26,5 +33,9 @@
       opacity: 1;
       transform: translateY(0);
     }
+  }
+  
+  .glass-effect {
+    @apply bg-white/80 dark:bg-gray-900/80 backdrop-blur-md;
   }
 }
