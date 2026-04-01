@@ -63,7 +63,7 @@ export default function Hero() {
               className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4"
             >
               Hi, I'm{' '}
-              <span className="text-gradient animate-gradient">John Doe</span>
+              <span className="text-gradient animate-gradient">Biruk Belay</span>
             </motion.h1>
 
             {/* Typing Animation */}
@@ -137,9 +137,9 @@ export default function Hero() {
               transition={{ delay: 0.7 }}
               className="flex space-x-4"
             >
-              <SocialIcon href="https://github.com" icon={Github} label="GitHub" />
-              <SocialIcon href="https://linkedin.com" icon={Linkedin} label="LinkedIn" />
-              <SocialIcon href="mailto:john@example.com" icon={Mail} label="Email" />
+              <SocialIcon href="https://github.com/biruk2116" icon={Github} label="GitHub" />
+              <SocialIcon href="https://linkedin.com/in/biruk-belay" icon={Linkedin} label="LinkedIn" />
+              <SocialIcon href="mailto:brukbelay61@gmail.com" icon={Mail} label="Email" />
             </motion.div>
           </motion.div>
 

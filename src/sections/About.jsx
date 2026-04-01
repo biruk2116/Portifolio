@@ -39,8 +39,7 @@ export default function About() {
               Who Am I?
             </h3>
             <p className="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
-              I'm a passionate Full Stack Developer with 5+ years of experience in building
-              web applications that solve real-world problems. My journey in tech started
+              I'm a passionate Full Stack Developer that solve real-world problems. My journey in tech started
               with a curiosity about how things work, and it has evolved into a career
               dedicated to creating exceptional digital experiences.
             </p>
