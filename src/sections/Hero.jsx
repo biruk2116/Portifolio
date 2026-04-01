@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Github, Linkedin, Mail, Download, ArrowDown } from 'lucide-react'
 import Typed from 'typed.js'
+import Image from "../assets/images/bura.jpg"
 
 export default function Hero() {
   const typedRef = useRef(null)
@@ -10,7 +11,7 @@ export default function Hero() {
     const typed = new Typed(typedRef.current, {
       strings: [
         'Full Stack Developer',
-        'UI/UX Enthusiast',
+        'Computer Science Student',
         'Problem Solver',
         'Tech Innovator',
         'Open Source Contributor'
@@ -172,8 +173,8 @@ export default function Hero() {
                 {/* Profile Image */}
                 <div className="absolute inset-[3px] rounded-full overflow-hidden bg-gradient-to-br from-neon-purple/20 to-neon-cyan/20">
                   <img
-                    src="https://ui-avatars.com/api/?background=8b5cf6&color=fff&bold=true&size=400&name=John+Doe&length=2&fontsize=0.5"
-                    alt="John Doe"
+                     src={Image} 
+                    alt="Biruk Belay"
                     className="w-full h-full object-cover"
                   />
                 </div>
