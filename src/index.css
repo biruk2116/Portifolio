@@ -441,3 +441,17 @@ html {
 .backdrop-enter {
   animation: fadeIn 0.3s ease-out;
 }
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+/* Animated Gradient */
+@keyframes gradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient 3s ease infinite;
+}
