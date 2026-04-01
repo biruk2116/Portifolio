@@ -1,9 +1,10 @@
-import React, { useState, useRef } from 'react'
-import { motion } from 'framer-motion'
+import React, { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { 
   Mail, MapPin, Phone, Send, Github, Linkedin, Twitter, 
   Instagram, CheckCircle, AlertCircle, Loader, User, 
-  MessageSquare, AtSign, Sparkles, ArrowRight
+  MessageSquare, AtSign, Sparkles, ArrowRight, X,
+  Award, Code, Briefcase, Clock, Users, Reply
 } from 'lucide-react'
 import emailjs from '@emailjs/browser'
 import toast, { Toaster } from 'react-hot-toast'
@@ -12,368 +13,415 @@ import useIntersectionObserver from '../hooks/useIntersectionObserver'
 export default function Contact() {
   const [ref, isVisible] = useIntersectionObserver()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [messageStatus, setMessageStatus] = useState(null)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     subject: '',
     message: ''
   })
-  const [errors, setErrors] = useState({})
-  const formRef = useRef()
+  const [fieldErrors, setFieldErrors] = useState({})
+  const [fieldSuccess, setFieldSuccess] = useState({})
+
+  // Configuration
+  const YOUR_EMAIL = 'brukbelay61@gmail.com'
+  
+  // Get these from EmailJS dashboard
+  const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+  const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID
+  const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
+  const EMAILJS_AUTO_REPLY_ID = import.meta.env.VITE_EMAILJS_AUTO_REPLY_TEMPLATE_ID
+
+  useEffect(() => {
+    if (EMAILJS_PUBLIC_KEY) {
+      emailjs.init(EMAILJS_PUBLIC_KEY)
+      console.log('✅ EmailJS initialized')
+    }
+  }, [])
+
+  const validateField = (name, value) => {
+    switch (name) {
+      case 'name':
+        if (!value.trim()) return 'Name is required'
+        if (value.length < 2) return 'Name must be at least 2 characters'
+        return ''
+      case 'email':
+        if (!value.trim()) return 'Email is required'
+        if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) return 'Invalid email address'
+        return ''
+      case 'message':
+        if (!value.trim()) return 'Message is required'
+        if (value.length < 10) return 'Message must be at least 10 characters'
+        return ''
+      default:
+        return ''
+    }
+  }
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    })
-    // Clear error for this field
-    if (errors[e.target.name]) {
-      setErrors({
-        ...errors,
-        [e.target.name]: ''
-      })
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+    
+    const error = validateField(name, value)
+    setFieldErrors(prev => ({ ...prev, [name]: error }))
+    
+    if (!error && value.trim()) {
+      setFieldSuccess(prev => ({ ...prev, [name]: true }))
+      setTimeout(() => {
+        setFieldSuccess(prev => ({ ...prev, [name]: false }))
+      }, 2000)
+    } else {
+      setFieldSuccess(prev => ({ ...prev, [name]: false }))
     }
   }
 
   const validateForm = () => {
-    const newErrors = {}
+    const errors = {}
+    let isValid = true
     
-    if (!formData.name.trim()) {
-      newErrors.name = 'Name is required'
-    } else if (formData.name.length < 2) {
-      newErrors.name = 'Name must be at least 2 characters'
-    }
+    const nameError = validateField('name', formData.name)
+    if (nameError) { errors.name = nameError; isValid = false }
     
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required'
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.email)) {
-      newErrors.email = 'Invalid email address'
-    }
+    const emailError = validateField('email', formData.email)
+    if (emailError) { errors.email = emailError; isValid = false }
     
-    if (!formData.message.trim()) {
-      newErrors.message = 'Message is required'
-    } else if (formData.message.length < 10) {
-      newErrors.message = 'Message must be at least 10 characters'
-    }
+    const messageError = validateField('message', formData.message)
+    if (messageError) { errors.message = messageError; isValid = false }
     
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
+    setFieldErrors(errors)
+    return isValid
+  }
+
+  const getCurrentTime = () => {
+    return new Date().toLocaleString('en-US', {
+      dateStyle: 'full',
+      timeStyle: 'medium'
+    })
   }
 
   const onSubmit = async (e) => {
     e.preventDefault()
     
+    setMessageStatus(null)
+    
     if (!validateForm()) {
-      toast.error('Please fix the form errors', {
-        duration: 3000,
-        icon: '⚠️',
+      setMessageStatus({
+        type: 'error',
+        title: 'Validation Error',
+        message: 'Please fix the errors in the form.',
+        details: Object.values(fieldErrors).join(', ')
+      })
+      toast.error('Please fix the errors in the form')
+      return
+    }
+    
+    if (!EMAILJS_PUBLIC_KEY || !EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID) {
+      setMessageStatus({
+        type: 'error',
+        title: 'Configuration Error',
+        message: 'EmailJS is not configured properly.',
+        details: 'Please check your .env file'
       })
       return
     }
     
     setIsSubmitting(true)
     
+    const senderEmail = formData.email
+    const senderName = formData.name
+    
+    setMessageStatus({
+      type: 'info',
+      title: 'Sending Message...',
+      message: `Sending your message to ${YOUR_EMAIL}`,
+      details: `From: ${senderEmail}\nTo: ${YOUR_EMAIL}`
+    })
+    
     try {
-      // Check if EmailJS is configured
-      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID
-      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
-      
-      if (!publicKey || !serviceId || !templateId) {
-        throw new Error('EmailJS is not configured. Please check your .env file.')
-      }
-      
-      console.log('Sending email with:', {
-        serviceId,
-        templateId,
-        publicKey: publicKey.substring(0, 10) + '...'
-      })
-      
-      const templateParams = {
-        from_name: formData.name,
-        from_email: formData.email,
-        to_name: 'John Doe',
-        subject: formData.subject || 'New Contact Form Message',
+      // Send email to YOU
+      const ownerParams = {
+        to_email: YOUR_EMAIL,
+        from_name: senderName,
+        from_email: senderEmail,
+        reply_to: senderEmail,
+        subject: formData.subject || `Message from ${senderName}`,
         message: formData.message,
-        reply_to: formData.email,
       }
       
-      const response = await emailjs.send(
-        serviceId,
-        templateId,
-        templateParams,
-        publicKey
-      )
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, ownerParams, EMAILJS_PUBLIC_KEY)
       
-      console.log('Email sent successfully:', response)
+      // Send AUTO-REPLY to sender
+      if (EMAILJS_AUTO_REPLY_ID) {
+        const autoReplyParams = {
+          to_email: senderEmail,
+          to_name: senderName,
+          from_name: 'John Doe',
+          from_email: YOUR_EMAIL,
+          reply_to: YOUR_EMAIL,
+          subject: `Thank you for contacting me!`,
+          message: `Dear ${senderName},\n\nThank you for reaching out! I have received your message and will get back to you within 24 hours.\n\nYour Message: ${formData.message}\n\nBest regards,\nJohn Doe\n${YOUR_EMAIL}`
+        }
+        
+        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_AUTO_REPLY_ID, autoReplyParams, EMAILJS_PUBLIC_KEY)
+      }
       
-      toast.success('Message sent successfully! I will get back to you soon.', {
-        duration: 5000,
-        icon: '🎉',
-        style: {
-          background: '#10b981',
-          color: '#fff',
-        },
+      setMessageStatus({
+        type: 'success',
+        title: 'Message Sent Successfully!',
+        message: `Your message has been sent to ${YOUR_EMAIL}`,
+        details: `To: ${YOUR_EMAIL}\nFrom: ${senderName} (${senderEmail})\nTime: ${getCurrentTime()}`
       })
       
-      // Reset form
-      setFormData({
-        name: '',
-        email: '',
-        subject: '',
-        message: ''
-      })
+      toast.success('Message sent successfully!')
+      
+      setFormData({ name: '', email: '', subject: '', message: '' })
+      setFieldErrors({})
+      setFieldSuccess({})
+      
+      setTimeout(() => {
+        setMessageStatus(null)
+      }, 5000)
       
     } catch (error) {
-      console.error('Error sending email:', error)
+      console.error('Error:', error)
       
-      let errorMessage = 'Failed to send message. '
-      
-      if (error.text) {
-        errorMessage += error.text
-      } else if (error.message) {
-        errorMessage += error.message
-      } else {
-        errorMessage += 'Please check your EmailJS configuration.'
-      }
-      
-      toast.error(errorMessage, {
-        duration: 6000,
-        icon: '❌',
-        style: {
-          background: '#ef4444',
-          color: '#fff',
-        },
+      setMessageStatus({
+        type: 'error',
+        title: 'Failed to Send Message',
+        message: error.text || 'Failed to send message',
+        details: `Error: ${error.text || error.message}`
       })
+      
+      toast.error('Failed to send message')
     } finally {
       setIsSubmitting(false)
     }
   }
 
+  const contactInfo = [
+    { icon: Mail, text: YOUR_EMAIL, label: 'Email', link: `mailto:${YOUR_EMAIL}`, gradient: 'from-purple-500 to-pink-500' },
+    { icon: Reply, text: 'Direct Reply', label: 'Reply To', gradient: 'from-green-500 to-emerald-500' },
+    { icon: Phone, text: '+1 (555) 123-4567', label: 'Phone', link: 'tel:+15551234567', gradient: 'from-orange-500 to-red-500' },
+    { icon: Clock, text: '24/7 Available', label: 'Response', gradient: 'from-cyan-500 to-blue-500' },
+  ]
+
+  const stats = [
+    { icon: Code, value: '50+', label: 'Projects' },
+    { icon: Award, value: '10+', label: 'Certifications' },
+    { icon: Briefcase, value: '5+', label: 'Years Exp' },
+    { icon: Users, value: '20+', label: 'Clients' },
+  ]
+
   const socialLinks = [
-    { icon: Github, href: 'https://github.com', label: 'GitHub', color: 'hover:text-gray-900 dark:hover:text-white' },
+    { icon: Github, href: 'https://github.com', label: 'GitHub', color: 'hover:text-gray-900' },
     { icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn', color: 'hover:text-blue-600' },
     { icon: Twitter, href: 'https://twitter.com', label: 'Twitter', color: 'hover:text-blue-400' },
     { icon: Instagram, href: 'https://instagram.com', label: 'Instagram', color: 'hover:text-pink-600' },
   ]
 
   return (
-    <section id="contact" className="py-20 relative overflow-hidden">
-      <Toaster position="top-right" />
+    <section id="contact" className="py-20 relative">
+      <Toaster position="top-center" />
       
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
-            <span className="text-gradient">Let's Work Together</span>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <div className="inline-block mb-4">
+            <div className="px-4 py-2 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-600 text-sm font-semibold">
+              <Sparkles className="inline w-4 h-4 mr-1" />
+              Get In Touch
+            </div>
+          </div>
+          
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+            <span className="bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent">
+              Let's Work Together
+            </span>
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-neon-purple to-neon-cyan mx-auto rounded-full" />
+          <div className="w-24 h-1 bg-gradient-to-r from-purple-600 to-cyan-600 mx-auto rounded-full" />
           <p className="text-gray-600 dark:text-gray-300 mt-4 max-w-2xl mx-auto">
-            Have a project in mind or want to collaborate? I'd love to hear from you!
+            Fill out the form below. I'll receive your message and respond within 24 hours.
           </p>
-        </motion.div>
+        </div>
 
-        <div ref={ref} className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
-          {/* Left Side - Contact Info */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={isVisible ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="glass-card p-8 h-full">
-              <h3 className="text-2xl font-bold mb-6 text-gradient">Contact Information</h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-8">
-                I'm currently available for freelance work and full-time positions. 
-                Feel free to reach out through any of these channels.
-              </p>
-              
-              <div className="space-y-6 mb-8">
-                <ContactInfo 
-                  icon={Mail} 
-                  text="john.doe@example.com" 
-                  label="Email" 
-                  link="mailto:john.doe@example.com"
-                />
-                <ContactInfo 
-                  icon={Phone} 
-                  text="+1 (555) 123-4567" 
-                  label="Phone" 
-                  link="tel:+15551234567"
-                />
-                <ContactInfo 
-                  icon={MapPin} 
-                  text="San Francisco, CA, USA" 
-                  label="Location" 
-                />
-              </div>
-              
-              {/* Social Links */}
+        {/* Status Message */}
+        {messageStatus && (
+          <div className={`mb-8 p-4 rounded-xl text-white ${
+            messageStatus.type === 'success' ? 'bg-green-500' : 
+            messageStatus.type === 'error' ? 'bg-red-500' : 'bg-blue-500'
+          }`}>
+            <div className="flex items-start justify-between">
               <div>
-                <h4 className="font-semibold mb-4 text-gray-800 dark:text-white">Connect with me</h4>
-                <div className="flex space-x-4">
-                  {socialLinks.map((social, idx) => (
-                    <motion.a
-                      key={social.label}
-                      href={social.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ scale: 1.2, y: -3 }}
-                      whileTap={{ scale: 0.95 }}
-                      className={`p-3 rounded-full glass-effect hover:shadow-lg transition-all duration-300 ${social.color}`}
-                    >
-                      <social.icon size={20} />
-                    </motion.a>
-                  ))}
+                <h4 className="font-semibold">{messageStatus.title}</h4>
+                <p className="text-sm opacity-90">{messageStatus.message}</p>
+                {messageStatus.details && (
+                  <p className="text-xs mt-1 opacity-75 whitespace-pre-wrap">{messageStatus.details}</p>
+                )}
+              </div>
+              <button onClick={() => setMessageStatus(null)} className="p-1 hover:bg-white/20 rounded">
+                <X size={16} />
+              </button>
+            </div>
+          </div>
+        )}
+
+        <div ref={ref} className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+          {/* Left Side - Contact Info */}
+          <div className="space-y-5">
+            <div className="grid sm:grid-cols-2 gap-4">
+              {contactInfo.map((info, idx) => (
+                <div
+                  key={info.label}
+                  className="bg-white/80 dark:bg-dark-200/80 backdrop-blur-sm rounded-xl p-4 flex items-center space-x-3 border border-gray-200 dark:border-dark-300"
+                >
+                  <div className={`p-2 rounded-lg bg-gradient-to-r ${info.gradient}`}>
+                    <info.icon size={18} className="text-white" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">{info.label}</p>
+                    {info.link ? (
+                      <a href={info.link} className="text-sm font-medium text-gray-800 dark:text-white hover:text-purple-600">
+                        {info.text}
+                      </a>
+                    ) : (
+                      <p className="text-sm font-medium text-gray-800 dark:text-white">{info.text}</p>
+                    )}
+                  </div>
                 </div>
+              ))}
+            </div>
+
+            <div className="grid grid-cols-4 gap-3">
+              {stats.map((stat) => (
+                <div
+                  key={stat.label}
+                  className="bg-white/80 dark:bg-dark-200/80 backdrop-blur-sm rounded-xl p-3 text-center border border-gray-200 dark:border-dark-300"
+                >
+                  <div className="p-1.5 rounded-lg bg-gradient-to-r from-purple-600 to-cyan-600 inline-block mb-1">
+                    <stat.icon size={14} className="text-white" />
+                  </div>
+                  <div className="text-lg font-bold text-purple-600 dark:text-purple-400">{stat.value}</div>
+                  <div className="text-[10px] text-gray-500 dark:text-gray-400">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+
+            <div className="bg-white/80 dark:bg-dark-200/80 backdrop-blur-sm rounded-xl p-4 border border-gray-200 dark:border-dark-300">
+              <h4 className="text-sm font-semibold mb-3">Connect With Me</h4>
+              <div className="flex space-x-3">
+                {socialLinks.map((social) => (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`p-2 rounded-full bg-gray-100 dark:bg-dark-300 hover:shadow-lg transition-all ${social.color}`}
+                  >
+                    <social.icon size={18} />
+                  </a>
+                ))}
               </div>
             </div>
-          </motion.div>
+          </div>
           
-          {/* Right Side - Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={isVisible ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <form onSubmit={onSubmit} className="glass-card p-8">
-              <h3 className="text-2xl font-bold mb-6 text-gradient">Send a Message</h3>
+          {/* Right Side - Form */}
+          <div>
+            <form onSubmit={onSubmit} className="bg-white/80 dark:bg-dark-200/80 backdrop-blur-sm rounded-xl p-6 border border-gray-200 dark:border-dark-300">
+              <h3 className="text-xl font-bold mb-5 text-purple-600 dark:text-purple-400">Send a Message</h3>
               
-              <div className="space-y-5">
-                {/* Name Field */}
+              <div className="space-y-4">
+                {/* Name */}
                 <div>
-                  <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-                    Your Name *
-                  </label>
                   <div className="relative">
-                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
                     <input
                       type="text"
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      className={`w-full pl-10 pr-4 py-3 rounded-lg bg-white dark:bg-dark-300 border ${
-                        errors.name ? 'border-red-500' : 'border-gray-300 dark:border-dark-400'
-                      } focus:border-neon-purple focus:outline-none transition-all`}
-                      placeholder="John Doe"
+                      className={`w-full pl-9 pr-3 py-2.5 text-sm rounded-lg bg-white dark:bg-dark-300 border ${
+                        fieldErrors.name ? 'border-red-500' : 'border-gray-300 dark:border-dark-400'
+                      } focus:border-purple-500 focus:outline-none`}
+                      placeholder="Your name"
                     />
-                    {errors.name && (
-                      <p className="text-red-500 text-xs mt-1">{errors.name}</p>
-                    )}
+                    {fieldSuccess.name && <CheckCircle size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-green-500" />}
                   </div>
+                  {fieldErrors.name && <p className="text-red-500 text-xs mt-1">{fieldErrors.name}</p>}
                 </div>
                 
-                {/* Email Field */}
+                {/* Email */}
                 <div>
-                  <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-                    Email Address *
-                  </label>
                   <div className="relative">
-                    <AtSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+                    <AtSign className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
                     <input
                       type="email"
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      className={`w-full pl-10 pr-4 py-3 rounded-lg bg-white dark:bg-dark-300 border ${
-                        errors.email ? 'border-red-500' : 'border-gray-300 dark:border-dark-400'
-                      } focus:border-neon-purple focus:outline-none transition-all`}
-                      placeholder="john@example.com"
+                      className={`w-full pl-9 pr-3 py-2.5 text-sm rounded-lg bg-white dark:bg-dark-300 border ${
+                        fieldErrors.email ? 'border-red-500' : 'border-gray-300 dark:border-dark-400'
+                      } focus:border-purple-500 focus:outline-none`}
+                      placeholder="your@email.com"
                     />
-                    {errors.email && (
-                      <p className="text-red-500 text-xs mt-1">{errors.email}</p>
-                    )}
+                    {fieldSuccess.email && <CheckCircle size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-green-500" />}
                   </div>
+                  {fieldErrors.email && <p className="text-red-500 text-xs mt-1">{fieldErrors.email}</p>}
                 </div>
                 
-                {/* Subject Field */}
+                {/* Subject */}
                 <div>
-                  <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-                    Subject (Optional)
-                  </label>
                   <div className="relative">
-                    <MessageSquare className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+                    <MessageSquare className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
                     <input
                       type="text"
                       name="subject"
                       value={formData.subject}
                       onChange={handleChange}
-                      className="w-full pl-10 pr-4 py-3 rounded-lg bg-white dark:bg-dark-300 border border-gray-300 dark:border-dark-400 focus:border-neon-purple focus:outline-none transition-all"
-                      placeholder="Project Inquiry"
+                      className="w-full pl-9 pr-3 py-2.5 text-sm rounded-lg bg-white dark:bg-dark-300 border border-gray-300 dark:border-dark-400 focus:border-purple-500 focus:outline-none"
+                      placeholder="Subject (optional)"
                     />
                   </div>
                 </div>
                 
-                {/* Message Field */}
+                {/* Message */}
                 <div>
-                  <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-                    Message *
-                  </label>
                   <textarea
-                    rows="5"
+                    rows="4"
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
-                    className={`w-full px-4 py-3 rounded-lg bg-white dark:bg-dark-300 border ${
-                      errors.message ? 'border-red-500' : 'border-gray-300 dark:border-dark-400'
-                    } focus:border-neon-purple focus:outline-none transition-all resize-none`}
+                    className={`w-full px-3 py-2.5 text-sm rounded-lg bg-white dark:bg-dark-300 border resize-none ${
+                      fieldErrors.message ? 'border-red-500' : 'border-gray-300 dark:border-dark-400'
+                    } focus:border-purple-500 focus:outline-none`}
                     placeholder="Tell me about your project..."
                   />
-                  {errors.message && (
-                    <p className="text-red-500 text-xs mt-1">{errors.message}</p>
-                  )}
-                </div>
-                
-                {/* Character Counter */}
-                <div className="text-right text-xs text-gray-500 dark:text-gray-400">
-                  {formData.message.length} / 500 characters
+                  <div className="flex justify-between mt-1">
+                    {fieldErrors.message && <p className="text-red-500 text-xs">{fieldErrors.message}</p>}
+                    <span className="text-xs text-gray-400 ml-auto">{formData.message.length}/500</span>
+                  </div>
                 </div>
                 
                 {/* Submit Button */}
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-4 rounded-lg font-semibold bg-gradient-to-r from-neon-purple to-neon-cyan text-white hover:shadow-lg hover:shadow-neon-purple/50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full py-3 rounded-lg font-semibold bg-gradient-to-r from-purple-600 to-cyan-600 text-white hover:shadow-lg transition-all disabled:opacity-50 flex items-center justify-center space-x-2"
                 >
                   {isSubmitting ? (
-                    <span className="flex items-center justify-center space-x-2">
-                      <Loader size={20} className="animate-spin" />
-                      <span>Sending...</span>
-                    </span>
+                    <><Loader size={18} className="animate-spin" /><span>Sending...</span></>
                   ) : (
-                    <span className="flex items-center justify-center space-x-2">
-                      <Send size={18} />
-                      <span>Send Message</span>
-                      <ArrowRight size={18} />
-                    </span>
+                    <><Send size={18} /><span>Send Message</span><ArrowRight size={16} /></>
                   )}
                 </button>
+                
+                <p className="text-center text-xs text-gray-500">
+                  I'll respond within 24 hours. Check your email for confirmation.
+                </p>
               </div>
             </form>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
   )
-}
-
-function ContactInfo({ icon: Icon, text, label, link }) {
-  const content = (
-    <div className="flex items-center space-x-4 group">
-      <div className="p-3 rounded-lg bg-gradient-to-r from-neon-purple to-neon-cyan group-hover:scale-110 transition-all duration-300">
-        <Icon size={20} className="text-white" />
-      </div>
-      <div>
-        <p className="text-xs text-gray-500 dark:text-gray-400">{label}</p>
-        <p className="text-gray-700 dark:text-gray-300">{text}</p>
-      </div>
-    </div>
-  )
-  
-  return link ? <a href={link}>{content}</a> : content
 }
