@@ -213,10 +213,9 @@ export default function Contact() {
   ]
 
   const socialLinks = [
-    { icon: Github, href: 'https://github.com', label: 'GitHub', color: 'hover:text-gray-900' },
-    { icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn', color: 'hover:text-blue-600' },
-    { icon: Twitter, href: 'https://twitter.com', label: 'Twitter', color: 'hover:text-blue-400' },
-    { icon: Instagram, href: 'https://instagram.com', label: 'Instagram', color: 'hover:text-pink-600' },
+    { icon: Github, href: 'https://github.com/biruk2116', label: 'GitHub', color: 'hover:text-gray-900' },
+    { icon: Linkedin, href: 'https://linkedin.com/in/biruk-belay', label: 'LinkedIn', color: 'hover:text-blue-600' },
+    { icon: Instagram, href: 'https://instagram.com/bu_ye21', label: 'Instagram', color: 'hover:text-pink-600' },
   ]
 
   return (

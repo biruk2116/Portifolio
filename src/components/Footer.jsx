@@ -1,6 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import { Heart, Github, Linkedin, Twitter, Mail } from 'lucide-react'
+import { Heart, Github, Linkedin, Mail } from 'lucide-react'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
@@ -12,7 +12,6 @@ export default function Footer() {
           <div className="flex space-x-6">
             <SocialIcon href="https://github.com/biruk2116" icon={Github} />
             <SocialIcon href="https://linkedin.com/in/biruk-belay" icon={Linkedin} />
-            <SocialIcon href="https://twitter.com" icon={Twitter} />
             <SocialIcon href="mailto:birukbelay528@gmail.com" icon={Mail} />
           </div>
           
@@ -20,7 +19,7 @@ export default function Footer() {
             <p className="text-gray-600 dark:text-gray-400">
               Made with{' '}
               <Heart size={16} className="inline text-red-500 fill-current animate-pulse" />{' '}
-              by John Doe
+              by Biruk Belay
             </p>
             <p className="text-sm text-gray-500 dark:text-gray-500 mt-2">
               © {currentYear} All rights reserved.
