@@ -51,10 +51,10 @@ export default function About() {
             </p>
             
             <div className="grid grid-cols-2 gap-4">
-              <InfoItem label="Name" value="John Doe" />
-              <InfoItem label="Location" value="San Francisco, CA" />
-              <InfoItem label="Email" value="john@example.com" />
-              <InfoItem label="Experience" value="5+ Years" />
+              <InfoItem label="Name" value="Biruk Belay" />
+              <InfoItem label="Location" value="Addis Ababa,Ethiopia" />
+              <InfoItem label="Email" value="brukbelay61@gmail.com" />
+              <InfoItem label="Experience" value="1 Year" />
             </div>
           </motion.div>
 

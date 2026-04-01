@@ -205,8 +205,8 @@ export default function Hero() {
                 className="absolute -left-8 top-1/2 transform -translate-y-1/2 bg-white/90 dark:bg-dark-200/90 backdrop-blur-lg rounded-xl p-3 shadow-lg hidden lg:block"
               >
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-gradient">5+</div>
-                  <div className="text-xs text-gray-600 dark:text-gray-400">Years Exp</div>
+                  <div className="text-2xl font-bold text-gradient">Full Stack</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400"></div>
                 </div>
               </motion.div>
               
@@ -217,8 +217,8 @@ export default function Hero() {
                 className="absolute -right-8 bottom-1/4 bg-white/90 dark:bg-dark-200/90 backdrop-blur-lg rounded-xl p-3 shadow-lg hidden lg:block"
               >
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-gradient">50+</div>
-                  <div className="text-xs text-gray-600 dark:text-gray-400">Projects</div>
+                  <div className="text-2xl font-bold text-gradient">Mern Stack</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400"></div>
                 </div>
               </motion.div>
             </div>
