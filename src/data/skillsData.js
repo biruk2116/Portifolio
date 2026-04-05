@@ -1,32 +1,45 @@
 export const skillsData = [
   {
-    category: 'Frontend Development',
+    category: "💻 Programming Languages",
+    icon: "Code2",
+    color: "from-blue-500 to-cyan-500",
+    gradient: "bg-gradient-to-br from-blue-500/10 to-cyan-500/10",
     skills: [
-      { name: 'React.js', level: 92 },
-      { name: 'Next.js', level: 88 },
-      { name: 'TypeScript', level: 85 },
-      { name: 'Tailwind CSS', level: 90 },
-      { name: 'Vue.js', level: 75 },
+      { name: "JavaScript/TypeScript", level: 90, logo: "📜", description: "ES6+, TypeScript, Modern JS" },
+      { name: "Python", level: 85, logo: "🐍", description: "Django, FastAPI, Data Analysis" },
+      { name: "HTML/CSS", level: 92, logo: "🌐", description: "Responsive Design, Animations" }
     ]
   },
   {
-    category: 'Backend Development',
+    category: "🌐 Web Development",
+    icon: "Globe",
+    color: "from-purple-500 to-pink-500",
+    gradient: "bg-gradient-to-br from-purple-500/10 to-pink-500/10",
     skills: [
-      { name: 'Node.js', level: 88 },
-      { name: 'Python', level: 82 },
-      { name: 'Express.js', level: 87 },
-      { name: 'PostgreSQL', level: 80 },
-      { name: 'MongoDB', level: 85 },
+      { name: "React.js", level: 92, logo: "⚛️", description: "Hooks, Redux, Vite" },
+      { name: "Node.js", level: 88, logo: "🟢", description: "Express, REST APIs" },
+      { name: "Tailwind CSS", level: 90, logo: "🎨", description: "Responsive Design, Animations" }
     ]
   },
   {
-    category: 'Tools & Technologies',
+    category: "🛠️ Tools & Platforms",
+    icon: "Terminal",
+    color: "from-orange-500 to-red-500",
+    gradient: "bg-gradient-to-br from-orange-500/10 to-red-500/10",
     skills: [
-      { name: 'Git & GitHub', level: 92 },
-      { name: 'Docker', level: 78 },
-      { name: 'AWS', level: 75 },
-      { name: 'Jest', level: 82 },
-      { name: 'Figma', level: 85 },
+      { name: "Git & GitHub", level: 92, logo: "🐙", description: "Version Control, Collaboration" },
+      { name: "VS Code", level: 90, logo: "💻", description: "Development Environment" },
+      { name: "Postman", level: 85, logo: "📮", description: "API Testing" }
+    ]
+  },
+  {
+    category: "🗄️ Databases",
+    icon: "Database",
+    color: "from-green-500 to-emerald-500",
+    gradient: "bg-gradient-to-br from-green-500/10 to-emerald-500/10",
+    skills: [
+      { name: "MongoDB", level: 85, logo: "🍃", description: "NoSQL Database" },
+      { name: "Firebase", level: 80, logo: "🔥", description: "Realtime Database, Auth" }
     ]
   }
 ]

@@ -7,10 +7,10 @@ export default function About() {
   const [ref, isVisible] = useIntersectionObserver()
 
   const stats = [
-    { icon: Code2, value: '50+', label: 'Projects Completed' },
-    { icon: Users, value: '20+', label: 'Happy Clients' },
-    { icon: Award, value: '10+', label: 'Certifications' },
-    { icon: Zap, value: '5+', label: 'Years Experience' },
+    { icon: Code2, value: '2+', label: 'Projects Completed' },
+    
+    { icon: Award, value: '3+', label: 'Certifications' },
+    { icon: Zap, value: '1+', label: 'Years Experience' },
   ]
 
   return (

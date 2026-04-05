@@ -171,7 +171,7 @@ export default function Navbar() {
                         exit={{ rotate: 90, scale: 0 }}
                         transition={{ duration: 0.3, type: "spring" }}
                       >
-                        <Sun size={20} className="text-yellow-300 drop-shadow-lg" />
+                        <Sun size={20} className="text-slate-00 drop-shadow-lg" />
                       </motion.div>
                     ) : (
                       <motion.div

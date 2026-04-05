@@ -5,16 +5,18 @@ export const experienceData = [
     company: 'TechCorp Inc.',
     period: '2022 - Present',
     location: 'San Francisco, CA',
+    icon: 'Rocket',
+    color: 'from-purple-500 to-pink-500',
+    achievements: [
+      '🏆 Led development of 5+ major web applications',
+      '⭐ Mentored 3 junior developers',
+      '📈 Improved performance by 40%'
+    ],
     responsibilities: [
       'Lead development of 5+ major web applications using React and Node.js, serving 100k+ users',
-      'Mentored 3 junior developers and conducted code reviews, improving team productivity by 40%',
-      'Implemented CI/CD pipelines reducing deployment time by 60% and eliminating manual errors',
-      'Optimized application performance achieving 95+ Lighthouse scores across all metrics'
-    ],
-    achievements: [
-      'Employee of the Month - 3 times',
-      'Best Innovation Award 2023',
-      'Led team to 200% revenue growth'
+      'Mentored 3 junior developers, improving team productivity by 40%',
+      'Implemented CI/CD pipelines reducing deployment time by 60%',
+      'Optimized application performance achieving 95+ Lighthouse scores'
     ]
   },
   {
@@ -23,16 +25,18 @@ export const experienceData = [
     company: 'Digital Agency Co.',
     period: '2020 - 2022',
     location: 'New York, NY',
+    icon: 'Code',
+    color: 'from-blue-500 to-cyan-500',
+    achievements: [
+      '🎯 Client Satisfaction: 4.9/5',
+      '⚡ 50% Load Time Reduction',
+      '🎨 Design System Creator'
+    ],
     responsibilities: [
       'Built responsive web applications for 15+ clients across various industries',
-      'Collaborated with designers to implement pixel-perfect UIs with accessibility standards',
-      'Integrated RESTful APIs and third-party services, ensuring seamless data flow',
-      'Maintained and improved existing codebase quality through refactoring and testing'
-    ],
-    achievements: [
-      'Client Satisfaction Score: 4.9/5',
-      'Reduced load time by 50%',
-      'Implemented design system used across 20+ projects'
+      'Collaborated with designers to implement pixel-perfect UIs',
+      'Integrated RESTful APIs and third-party services',
+      'Maintained and improved existing codebase quality'
     ]
   },
   {
@@ -41,16 +45,18 @@ export const experienceData = [
     company: 'Startup Studio',
     period: '2019 - 2020',
     location: 'Austin, TX',
-    responsibilities: [
-      'Developed and maintained multiple client websites using modern JavaScript frameworks',
-      'Participated in agile development processes including daily stand-ups and sprint planning',
-      'Wrote clean, maintainable code with thorough documentation and testing',
-      'Assisted in debugging and testing applications across different browsers and devices'
-    ],
+    icon: 'Sparkles',
+    color: 'from-green-500 to-emerald-500',
     achievements: [
-      'Fastest Learner Award',
-      'Contributed to 10+ successful project launches',
-      'Implemented automated testing suite'
+      '🚀 Fastest Learner Award',
+      '📦 10+ Project Launches',
+      '🧪 Automated Testing Suite'
+    ],
+    responsibilities: [
+      'Developed and maintained multiple client websites',
+      'Participated in agile development processes',
+      'Wrote clean, maintainable code with documentation',
+      'Assisted in debugging across different browsers'
     ]
   }
 ]

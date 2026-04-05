@@ -1,50 +1,24 @@
 export const certificatesData = [
   {
     id: 1,
-    title: 'Advanced React & Redux',
-    issuer: 'Meta',
-    date: '2024',
-    description: 'Comprehensive course on React hooks, state management, and performance optimization.',
-    link: 'https://example.com'
+    title: 'Programming Fundamentals Nanodegree',
+    issuer: 'Udacity (Part of Accenture)',
+    date: 'February 4, 2026',
+    description: 'Comprehensive programming fundamentals certification covering core programming concepts, problem-solving, and software development basics.',
+    image: '/images/certificates/ProgrammingFundamentals.png',
+    link: 'https://confirm.udacity.com/MP7J29EG',
+    verificationCode: 'MP7J29EG',
+    color: 'from-purple-500 to-pink-500'
   },
   {
     id: 2,
-    title: 'Full Stack Development',
-    issuer: 'Coursera',
-    date: '2023',
-    description: 'Complete web development bootcamp covering MERN stack and modern practices.',
-    link: 'https://example.com'
-  },
-  {
-    id: 3,
-    title: 'AWS Solutions Architect',
-    issuer: 'Amazon Web Services',
-    date: '2023',
-    description: 'Cloud architecture and AWS services certification.',
-    link: 'https://example.com'
-  },
-  {
-    id: 4,
-    title: 'Machine Learning Specialization',
-    issuer: 'Stanford Online',
-    date: '2023',
-    description: 'Advanced ML algorithms and practical applications.',
-    link: 'https://example.com'
-  },
-  {
-    id: 5,
-    title: 'UI/UX Design Fundamentals',
-    issuer: 'Google',
-    date: '2022',
-    description: 'User-centered design principles and prototyping.',
-    link: 'https://example.com'
-  },
-  {
-    id: 6,
-    title: 'TypeScript Mastery',
-    issuer: 'Microsoft',
-    date: '2024',
-    description: 'Advanced TypeScript patterns and best practices.',
-    link: 'https://example.com'
+    title: 'AI Fundamentals',
+    issuer: 'Global Chapters - Ethiopia',
+    date: 'March 11, 2026',
+    description: 'Artificial Intelligence fundamentals certification covering AI concepts, machine learning basics, and practical applications.',
+    image: '/images/certificates/ArtificialIntelligence.png',
+    link: '#',
+    verificationCode: 'AI-ETH-2026',
+    color: 'from-blue-500 to-cyan-500'
   }
 ]
