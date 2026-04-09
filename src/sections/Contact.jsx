@@ -200,16 +200,16 @@ export default function Contact() {
 
   const contactInfo = [
     { icon: Mail, text: YOUR_EMAIL, label: 'Email', link: `mailto:${YOUR_EMAIL}`, gradient: 'from-purple-500 to-pink-500' },
-    { icon: Reply, text: 'Direct Reply', label: 'Reply To', gradient: 'from-green-500 to-emerald-500' },
-    { icon: Phone, text: '+1 (555) 123-4567', label: 'Phone', link: 'tel:+15551234567', gradient: 'from-orange-500 to-red-500' },
+
+    { icon: Phone, text: '+251-961733380', label: 'Phone', link: 'tel:+251-961733380', gradient: 'from-orange-500 to-red-500' },
     { icon: Clock, text: '24/7 Available', label: 'Response', gradient: 'from-cyan-500 to-blue-500' },
   ]
 
   const stats = [
-    { icon: Code, value: '50+', label: 'Projects' },
-    { icon: Award, value: '10+', label: 'Certifications' },
-    { icon: Briefcase, value: '5+', label: 'Years Exp' },
-    { icon: Users, value: '20+', label: 'Clients' },
+    { icon: Code, value: '2+', label: 'Projects' },
+    { icon: Award, value: '3+', label: 'Certifications' },
+    { icon: Briefcase, value: '1+', label: 'Years Exp' },
+  
   ]
 
   const socialLinks = [
